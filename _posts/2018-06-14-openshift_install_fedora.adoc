@@ -6,6 +6,7 @@ Openshift installation on Fedora
 :Email:     johara@redhat.com
 :Date:      07/06/2018
 :Revision:  0.1-SNAPSHOT
+:page-root: /
 
 == Docker rpm installation & configuration
 

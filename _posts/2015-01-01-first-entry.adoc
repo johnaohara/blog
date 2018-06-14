@@ -1,9 +1,0 @@
-= First Entry
-:showtitle:
-:page-navtitle: Updated Title
-:page-excerpt: Excerpt goes here.
-:page-root: ../../../
-
-== Example entry
-
-This is a test - to see if auto building works
