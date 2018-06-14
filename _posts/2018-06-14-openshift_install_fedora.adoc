@@ -1,12 +1,14 @@
-Openshift installation on Fedora
-================================
 :showtitle:
+:title: Openshift installation on Fedora
 :page-navtitle: Openshift installation on Fedora
-:Author:    John O'Hara
-:Email:     johara@redhat.com
-:Date:      07/06/2018
-:Revision:  0.1-SNAPSHOT
+:author:    John O'Hara
+:email:     johara@redhat.com
+:date:      07/06/2018
+:revision:  0.1-SNAPSHOT
 :page-root: ../../../
+:category: [blog]
+:tags: [openshift, fedora, howto]
+So.. you want to install Openshift on Fedora? Confused by the myriad of installation options? Here, we run through step-by-step an easy installation of Openshift on Fedora 27, that will get you up and running in no time!
 
 == Docker rpm installation & configuration
 

@@ -1,11 +1,13 @@
 title: The Performant Performanteer
 description: Musings of a java muddleware muskateer
+author: John O'Hara
 exclude:
   - LICENSE.adoc
   - README.adoc
   - Gemfile
   - Gemfile.lock
   - Rakefile
+  - .idea/
 asciidoc: {}
 asciidoctor:
   base_dir: :docdir
