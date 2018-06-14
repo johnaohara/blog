@@ -1,0 +1,363 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Openshift installation on Fedora</title>
+    <meta name="description" content="The Jekyll AsciiDoc Quickstart project is a leg-up in starting your own website hosted on GitHub with content based in AsciiDoc.">
+    <meta name="author" content="Your name goes here">
+    <meta name="copyright" content="Maybe consider a Creative Commons license">
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/coderay.css">
+    <link rel="stylesheet" href="css/asciidoctor.css">
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="js/toc.js"></script>
+</head>
+<body>
+
+
+<!-- Nav Bar -->
+
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="">Jekyll AsciiDoc Quickstart</a>
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns" role="content">
+
+        <h1>Openshift installation on Fedora</h1>
+<div class="sect1">
+<h2 id="docker_rpm_installation_configuration">Docker rpm installation &amp; configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following step-by-step guide will allow you to install the latest version of docker and openshift origin on Fedora 27.</p>
+</div>
+<div class="sect2">
+<h3 id="remove_old_versions_of_docker">remove old versions of docker</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>$ sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setup_docker_repository">setup docker repository</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>install dnf-plugins-core which provides command line tools to manage your dnf repo.</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo dnf -y install dnf-plugins-core</pre>
+</div>
+</div>
+</li>
+<li>
+<p>configure the <strong>stable</strong> fedora repository</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo dnf config-manager \
+  --add-repo \
+  https://download.docker.com/linux/fedora/docker-ce.repo</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Optional</strong>: enable the <strong>edge</strong> and <strong>test</strong> repos, which are disabled by default in the docker.repo</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo dnf config-manager --set-enabled docker-ce-edge
+$ sudo dnf config-manager --set-enabled docker-ce-test</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="install_docker_ce">Install Docker-CE</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install latest version of Docker-ce</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo dnf install docker-ce-17.12.1.ce-1.fc27.x86_64</pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Currently, docker versions greater then 17.12 do not work correctly with openshift v3.9.0. If you use a more recent version, you will likely see the following expception "linux mounts: Could not find source mount of /var/lib/origin/openshift.local.volumes"
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Start Docker</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo systemctl start docker</pre>
+</div>
+</div>
+</li>
+<li>
+<p>verfiy that the docker deamon is running correctly by running the ``hello-world`` image</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo docker run hello-world</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If installation has been successfull, you should see the following terminal output
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>   # sudo docker run hello-world
+
+     Hello from Docker!
+     This message shows that your installation appears to be working correctly.</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>create docker group to manage docker service</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo groupadd docker</pre>
+</div>
+</div>
+</li>
+<li>
+<p>add current user to docker group</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo usermod -aG docker $USER</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or a specific user</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo usermod -aG docker bob</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Log out and log back in again to ensure user has picked up the new group membership</p>
+</li>
+<li>
+<p>Test that you can use the docker service without sudo</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ docker run hello-world</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="openshift_installation_configuration">Openshift installation &amp; configuration</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download the binary from the Releases page. <a href="https://www.openshift.org/download.html" class="bare">https://www.openshift.org/download.html</a></p>
+</li>
+<li>
+<p>Unpackage openshift server</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ tar xvf openshift-origin-server-v3.9.0-191fece-linux-64bit.tar.gz</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Unpackage openshift client tool</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ tar xvf openshift-origin-client-tools-v3.9.0-191fece-linux-64bit.tar.gz</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Ensure required packages are installed</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ dnf install wget git net-tools bind-utils dnf-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Ensure system is up to date</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ dnf update</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add the directory you untarred the release into to your path:</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ export PATH="$(pwd)":$PATH</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Edit <code>/usr/lib/systemd/system/docker.service</code> with the following content, change:</p>
+<div class="literalblock">
+<div class="content">
+<pre>ExecStart=/usr/bin/dockerd</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>ExecStart=/usr/bin/dockerd --insecure-registry 172.30.0.0/16</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Restart docker</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo systemctl restart docker</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Launch the openshift cluster:</p>
+<div class="literalblock">
+<div class="content">
+<pre>$ sudo oc cluster up</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the above steps have been successful, you should see the following output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code># sudo oc cluster up
+Using nsenter mounter for OpenShift volumes
+Using 127.0.0.1 as the server IP
+Starting OpenShift using openshift/origin:v3.9.0 ...
+OpenShift server started.
+
+The server is accessible via web console at:
+    https://127.0.0.1:8443
+
+You are logged in as:
+    User:     developer
+    Password: &lt;any value&gt;
+
+To login as administrator:
+    oc login -u system:admin</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+    <aside class="large-3 columns">
+
+        <h4>Posts</h4>
+        <ul id="posts" class="posts nav">
+            
+            <li><a href="./2018/06/14/openshift_install_fedora.html">Openshift installation on Fedora</a></li>
+            
+            <li><a href="./2015/01/01/first-entry.html">Updated Title</a></li>
+            
+        </ul>
+
+        <div class="panel">
+            <h5>Featured</h5>
+
+            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon
+                nulla pork belly cupidatat meatloaf cow.</p>
+        </div>
+
+    </aside>
+
+    <!-- End Sidebar -->
+</div>
+
+<!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/vendor/jquery.js"></script>
+<script src="js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+</body>
+</html>
