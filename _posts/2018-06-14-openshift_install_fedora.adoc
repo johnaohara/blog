@@ -1,6 +1,7 @@
 :showtitle:
 :title: Openshift installation on Fedora
 :page-navtitle: Openshift installation on Fedora
+:comments: true
 :author:    John O'Hara
 :email:     johara@redhat.com
 :date:      07/06/2018
