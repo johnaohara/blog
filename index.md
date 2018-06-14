@@ -1,7 +1,14 @@
+---
+layout: home
+title: The Performant Performanteer!
+showtitle:
+page-navtitle: Home page
+Author:    John O'Hara
+Date:      07/06/2018
+Revision:  0.1-SNAPSHOT
+page-root: ../../../
+---
 = Welcome to the Performant Performanteer!
-:showtitle:
-:page-title: Jekyll AsciiDoc Quickstart
-:page-description: A forkable blog-ready Jekyll site using AsciiDoc
 
 You've successfully a little corner of the internet dedicated to the black art of performance engineering.
 
