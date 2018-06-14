@@ -5,10 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Openshift installation on Fedora</title>
+    <title>Openshift_install_fedora</title>
     <meta name="description" content="Musings of a java muddleware muskateer">
     <meta name="author" content="Your name goes here">
     <meta name="copyright" content="Maybe consider a Creative Commons license">
+    <link rel="stylesheet" href="../../../css/blog.css">
     <link rel="stylesheet" href="../../../css/foundation.css">
     <link rel="stylesheet" href="../../../css/font-awesome.css">
     <link rel="stylesheet" href="../../../css/coderay.css">
@@ -40,9 +41,15 @@
 <div class="row">
 
     <!-- Main Blog Content -->
+    <div class="large-9 columns" role="contentTitle">
+        <h1>Openshift_install_fedora</h1>
+        <p class="postDate">14 June 2018<p>
+        <p></p>
+    </div>
     <div class="large-9 columns" role="content">
-
-        <h1>Openshift installation on Fedora</h1>
+        <div class="paragraph">
+<p>So.. you want to install Openshift on Fedora? Confused by the myriad of installation options? Here, we run through step-by-step an easy installation of Openshift on Fedora 27, that will get you up and running in no time!</p>
+</div>
 <div class="sect1">
 <h2 id="docker_rpm_installation_configuration">Docker rpm installation &amp; configuration</h2>
 <div class="sectionbody">
@@ -133,7 +140,7 @@ Currently, docker versions greater then 17.12 do not work correctly with openshi
 </div>
 </li>
 <li>
-<p>verfiy that the docker deamon is running correctly by running the ``hello-world`` image</p>
+<p>verfiy that the docker deamon is running correctly by running the <code>hello-world</code> image</p>
 <div class="literalblock">
 <div class="content">
 <pre>$ sudo docker run hello-world</pre>
