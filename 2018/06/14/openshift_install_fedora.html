@@ -257,18 +257,12 @@ If installation has been successfull, you should see the following terminal outp
 </div>
 </li>
 <li>
-<p>Edit <code>/usr/lib/systemd/system/docker.service</code> with the following content, change:</p>
+<p>Create a file /etc/docker/daemon.json with following content</p>
 <div class="literalblock">
 <div class="content">
-<pre>ExecStart=/usr/bin/dockerd</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>to</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>ExecStart=/usr/bin/dockerd --insecure-registry 172.30.0.0/16</pre>
+<pre>{
+    "insecure-registries" : [ "hostname.cloudapp.net:5000" ]
+}</pre>
 </div>
 </div>
 </li>
@@ -276,7 +270,8 @@ If installation has been successfull, you should see the following terminal outp
 <p>Restart docker</p>
 <div class="literalblock">
 <div class="content">
-<pre>$ sudo systemctl restart docker</pre>
+<pre>$ systemctl daemon-reload
+$ systemctl restart docker</pre>
 </div>
 </div>
 </li>
@@ -284,7 +279,7 @@ If installation has been successfull, you should see the following terminal outp
 <p>Launch the openshift cluster:</p>
 <div class="literalblock">
 <div class="content">
-<pre>$ sudo oc cluster up</pre>
+<pre>$ oc cluster up</pre>
 </div>
 </div>
 <div class="paragraph">

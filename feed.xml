@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-06-14T19:36:09+00:00</updated><id>/</id><title type="html">The Performant Performanteer</title><subtitle>Musings of a java muddleware muskateer</subtitle><author><name>John O'Hara</name></author><entry><title type="html">Openshift_install_fedora</title><link href="/2018/06/14/openshift_install_fedora.html" rel="alternate" type="text/html" title="Openshift_install_fedora" /><published>2018-06-14T00:00:00+00:00</published><updated>2018-06-14T00:00:00+00:00</updated><id>/2018/06/14/openshift_install_fedora</id><content type="html" xml:base="/2018/06/14/openshift_install_fedora.html">&lt;div class=&quot;paragraph&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-06-19T17:13:55+00:00</updated><id>/</id><title type="html">The Performant Performanteer</title><subtitle>Musings of a java muddleware muskateer</subtitle><author><name>John O'Hara</name></author><entry><title type="html">Openshift_install_fedora</title><link href="/2018/06/14/openshift_install_fedora.html" rel="alternate" type="text/html" title="Openshift_install_fedora" /><published>2018-06-14T00:00:00+00:00</published><updated>2018-06-14T00:00:00+00:00</updated><id>/2018/06/14/openshift_install_fedora</id><content type="html" xml:base="/2018/06/14/openshift_install_fedora.html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;So.. you want to install Openshift on Fedora? Confused by the myriad of installation options? Here, we run through step-by-step an easy installation of Openshift on Fedora 27, that will get you up and running in no time!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;sect1&quot;&gt;
@@ -207,18 +207,12 @@ If installation has been successfull, you should see the following terminal outp
 &lt;/div&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Edit &lt;code&gt;/usr/lib/systemd/system/docker.service&lt;/code&gt; with the following content, change:&lt;/p&gt;
+&lt;p&gt;Create a file /etc/docker/daemon.json with following content&lt;/p&gt;
 &lt;div class=&quot;literalblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;ExecStart=/usr/bin/dockerd&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;to&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;literalblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;ExecStart=/usr/bin/dockerd --insecure-registry 172.30.0.0/16&lt;/pre&gt;
+&lt;pre&gt;{
+    &quot;insecure-registries&quot; : [ &quot;hostname.cloudapp.net:5000&quot; ]
+}&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/li&gt;
@@ -226,7 +220,8 @@ If installation has been successfull, you should see the following terminal outp
 &lt;p&gt;Restart docker&lt;/p&gt;
 &lt;div class=&quot;literalblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;$ sudo systemctl restart docker&lt;/pre&gt;
+&lt;pre&gt;$ systemctl daemon-reload
+$ systemctl restart docker&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/li&gt;
@@ -234,7 +229,7 @@ If installation has been successfull, you should see the following terminal outp
 &lt;p&gt;Launch the openshift cluster:&lt;/p&gt;
 &lt;div class=&quot;literalblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;pre&gt;$ sudo oc cluster up&lt;/pre&gt;
+&lt;pre&gt;$ oc cluster up&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
