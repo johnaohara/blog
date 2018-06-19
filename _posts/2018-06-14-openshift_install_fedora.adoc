@@ -113,21 +113,20 @@ or a specific user
 
     $ export PATH="$(pwd)":$PATH
 
-7. Edit `/usr/lib/systemd/system/docker.service` with the following content, change:
+7. Create a file /etc/docker/daemon.json with following content
 
-    ExecStart=/usr/bin/dockerd
-+
-to
-+
-    ExecStart=/usr/bin/dockerd --insecure-registry 172.30.0.0/16
+   {
+       "insecure-registries" : [ "hostname.cloudapp.net:5000" ]
+   }
 
 8. Restart docker
 
-    $ sudo systemctl restart docker
+    $ systemctl daemon-reload
+    $ systemctl restart docker
 
 9. Launch the openshift cluster:
 
-    $ sudo oc cluster up
+    $ oc cluster up
 +
 If the above steps have been successful, you should see the following output
 +
